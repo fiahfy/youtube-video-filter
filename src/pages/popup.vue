@@ -41,9 +41,6 @@ export default class Popup extends Vue {
   brightness = 1
   contrast = 1
   invert = 0
-  videoQualityFixed = true
-  reloadButtonEnabled = true
-  forceScrollButtonEnabled = true
 
   async created() {
     const { filter } = await browser.runtime.sendMessage({ id: 'popupLoaded' })
