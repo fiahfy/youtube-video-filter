@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-content class="fill-height">
-      <v-container ref="container" fluid>
+      <v-container fluid>
         <v-slider
           v-model="brightness"
           min="0"
