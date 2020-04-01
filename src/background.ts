@@ -1,5 +1,5 @@
 import { browser } from 'webextension-polyfill-ts'
-import iconOn from '~/assets/icon-on.png'
+import icon from '~/assets/icon.png'
 import Filter from '~/models/filter'
 
 const initialFilter: Filter = { brightness: 1, contrast: 1, invert: 0 }
@@ -8,7 +8,7 @@ let filters: { [tabId: number]: Filter } = {}
 const contentLoaded = async (tabId: number) => {
   const filter = filters[tabId] ?? { ...initialFilter }
 
-  await browser.pageAction.setIcon({ tabId, path: iconOn })
+  await browser.pageAction.setIcon({ tabId, path: icon })
   await browser.pageAction.show(tabId)
 
   return { filter }

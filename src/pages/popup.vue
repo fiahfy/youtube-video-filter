@@ -9,6 +9,7 @@
           step="0.01"
           prepend-icon="mdi-brightness-6"
           dense
+          hide-details
         />
         <v-slider
           v-model="contrast"
@@ -17,6 +18,7 @@
           step="0.01"
           prepend-icon="mdi-contrast-box"
           dense
+          hide-details
         />
         <v-slider
           v-model="invert"
@@ -25,8 +27,11 @@
           step="0.01"
           prepend-icon="mdi-invert-colors"
           dense
+          hide-details
         />
-        <v-btn depressed small block @click="onClickReset">Reset</v-btn>
+        <v-btn class="mt-3" depressed small block @click="onClickReset">
+          Reset
+        </v-btn>
       </v-container>
     </v-content>
   </v-app>
@@ -87,7 +92,7 @@ html {
 
 <style lang="scss" scoped>
 .v-application {
-  min-width: 480px;
+  min-width: 320px;
   .v-content ::v-deep .v-content__wrap {
     overflow-y: auto;
   }
