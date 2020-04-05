@@ -47,7 +47,6 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
 })
 
 browser.runtime.onMessage.addListener(async (message, sender) => {
-  console.log(message, sender)
   const { id, data } = message
   const { tab } = sender
   switch (id) {

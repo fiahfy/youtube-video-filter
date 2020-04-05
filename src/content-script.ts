@@ -15,7 +15,6 @@ const applyFilter = async () => {
   if (!video) {
     return
   }
-  console.log(filter)
   video.style.filter = [
     `brightness(${Math.pow(filter.brightness, 3)})`,
     `contrast(${Math.pow(filter.contrast, 3)})`,
