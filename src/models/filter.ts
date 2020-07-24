@@ -1,4 +1,4 @@
-export default interface Filter {
+export type Filter = {
   brightness: number
   contrast: number
   invert: number

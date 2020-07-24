@@ -1,11 +1,11 @@
 import { browser } from 'webextension-polyfill-ts'
-import Filter from '~/models/filter'
+import { Filter } from '~/models'
 
 let filter: Filter
 
-export const isVideoUrl = () => new URL(location.href).pathname === '/watch'
+const isVideoUrl = () => new URL(location.href).pathname === '/watch'
 
-const applyFilter = async () => {
+const applyFilter = () => {
   if (!isVideoUrl()) {
     return
   }
@@ -22,19 +22,19 @@ const applyFilter = async () => {
   ].join(' ')
 }
 
-browser.runtime.onMessage.addListener(async (message) => {
+browser.runtime.onMessage.addListener((message) => {
   const { id, data } = message
   switch (id) {
     case 'urlChanged':
-      return await applyFilter()
+      return applyFilter()
     case 'filterChanged':
       filter = data.filter
-      return await applyFilter()
+      return applyFilter()
   }
 })
 
 document.addEventListener('DOMContentLoaded', async () => {
   const data = await browser.runtime.sendMessage({ id: 'contentLoaded' })
   filter = data.filter
-  await applyFilter()
+  applyFilter()
 })

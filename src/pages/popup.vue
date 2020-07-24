@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <v-content class="fill-height">
+    <v-main class="fill-height">
       <v-container fluid>
         <v-slider
-          v-model="brightness"
+          v-model="state.brightness"
           min="0"
           max="2"
           step="0.01"
@@ -12,7 +12,7 @@
           hide-details
         />
         <v-slider
-          v-model="contrast"
+          v-model="state.contrast"
           min="0"
           max="2"
           step="0.01"
@@ -21,7 +21,7 @@
           hide-details
         />
         <v-slider
-          v-model="invert"
+          v-model="state.invert"
           min="0"
           max="1"
           step="0.01"
@@ -29,62 +29,73 @@
           dense
           hide-details
         />
-        <v-btn class="mt-3" depressed small block @click="onClickReset">
+        <v-btn class="mt-3" depressed small block @click="handleClickReset">
           Reset
         </v-btn>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
+import {
+  defineComponent,
+  reactive,
+  watch,
+  onMounted,
+} from '@vue/composition-api'
 import { browser } from 'webextension-polyfill-ts'
-import { Vue, Component } from 'vue-property-decorator'
 
-@Component
-export default class Popup extends Vue {
-  brightness = 1
-  contrast = 1
-  invert = 0
+export default defineComponent({
+  setup() {
+    const state = reactive({
+      brightness: 1,
+      contrast: 1,
+      invert: 0,
+    })
 
-  async created() {
-    const { filter } = await browser.runtime.sendMessage({ id: 'popupLoaded' })
-    this.brightness = filter.brightness
-    this.contrast = filter.contrast
-    this.invert = filter.invert
+    const handleClickReset = () => {
+      state.brightness = 1
+      state.contrast = 1
+      state.invert = 0
+    }
 
-    this.$watch(
-      () => [this.brightness, this.contrast, this.invert],
-      async () => {
+    watch(
+      [() => state.brightness, () => state.contrast, () => state.invert],
+      async ([brightness, contrast, invert]) => {
         await browser.runtime.sendMessage({
           id: 'filterChanged',
           data: {
             filter: {
-              brightness: this.brightness,
-              contrast: this.contrast,
-              invert: this.invert,
+              brightness,
+              contrast,
+              invert,
             },
           },
         })
       }
     )
-  }
 
-  onClickReset() {
-    this.brightness = 1
-    this.contrast = 1
-    this.invert = 0
-  }
-}
+    onMounted(async () => {
+      console.log(1)
+      const { filter } = await browser.runtime.sendMessage({
+        id: 'popupLoaded',
+      })
+      console.log(filter)
+      state.brightness = filter.brightness
+      state.contrast = filter.contrast
+      state.invert = filter.invert
+    })
+
+    return {
+      state,
+      handleClickReset,
+    }
+  },
+})
 </script>
 
 <style lang="scss">
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
 html {
   overflow-y: hidden;
 }
@@ -93,8 +104,5 @@ html {
 <style lang="scss" scoped>
 .v-application {
   min-width: 320px;
-  .v-content ::v-deep .v-content__wrap {
-    overflow-y: auto;
-  }
 }
 </style>

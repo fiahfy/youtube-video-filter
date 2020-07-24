@@ -1,6 +1,6 @@
 import { browser } from 'webextension-polyfill-ts'
 import icon from '~/assets/icon.png'
-import Filter from '~/models/filter'
+import { Filter } from '~/models'
 
 const initialFilter: Filter = { brightness: 1, contrast: 1, invert: 0 }
 let filters: { [tabId: number]: Filter } = {}
