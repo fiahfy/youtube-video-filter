@@ -77,11 +77,9 @@ export default defineComponent({
     )
 
     onMounted(async () => {
-      console.log(1)
       const { filter } = await browser.runtime.sendMessage({
         id: 'popupLoaded',
       })
-      console.log(filter)
       state.brightness = filter.brightness
       state.contrast = filter.contrast
       state.invert = filter.invert
