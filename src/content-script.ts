@@ -10,7 +10,7 @@ const applyFilter = () => {
     return
   }
   const video = document.querySelector(
-    'video.html5-main-video'
+    'ytd-watch-flexy video.html5-main-video'
   ) as HTMLVideoElement | null
   if (!video) {
     return
